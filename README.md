@@ -93,5 +93,4 @@ Users are responsible for complying with the Terms of Service of TikTok and any 
 
 ## 📄 License
 
-This project is licensed under the MIT License.
-EOF
+This project is licensed under the [MIT License](https://github.com/Mahdi-Haqiqat/Tiktok-Downloader/blob/main/LICENSE).
