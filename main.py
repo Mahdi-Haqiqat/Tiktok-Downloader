@@ -113,7 +113,6 @@ def process_url(url):
     images = get_tiktok_images(url)
 
     if images:
-        print(f"📸 {len(images)} images found\n")
         download_images(images)
     else:
         download_video([url])
