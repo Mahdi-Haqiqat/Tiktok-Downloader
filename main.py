@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import re
 import requests
 from pathlib import Path
 import yt_dlp
@@ -20,41 +21,78 @@ HEADERS = {
 }
 
 # -------------------------------
-# 2. Progress bar for images
+# 2. Clean title
+# -------------------------------
+def clean_title(title):
+    if not title:
+        return "TikTok"
+
+    # remove useless words
+    title = re.sub(r'\b(video|official|tiktok)\b', '', title, flags=re.IGNORECASE)
+
+    # remove invalid characters
+    title = re.sub(r'[\\/*?:"<>|]', '', title)
+
+    # normalize spaces
+    title = re.sub(r'\s+', ' ', title).strip()
+
+    return title or "TikTok"
+
+# -------------------------------
+# 3. Unique filename (no overwrite)
+# -------------------------------
+def get_unique_filename(path):
+    if not path.exists():
+        return path
+
+    stem = path.stem
+    suffix = path.suffix
+    counter = 1
+
+    while True:
+        new_path = path.with_name(f"{stem}_{counter}{suffix}")
+        if not new_path.exists():
+            return new_path
+        counter += 1
+
+# -------------------------------
+# 4. Progress bar for images
 # -------------------------------
 def image_progress(current, total):
     bar_length = 12
     filled = int(bar_length * current / total)
-
     bar = "█" * filled + " " * (bar_length - filled)
 
     print(f"\r💾 Pictures [{bar}] ⬇ {current}/{total}", end="")
-    
 
 # -------------------------------
-# 3. TikTok image fetch
+# 5. TikTok data fetch
 # -------------------------------
-def get_tiktok_images(url):
+def get_tiktok_data(url):
     api = "https://www.tikwm.com/api/"
     try:
         res = requests.get(api, params={"url": url}, headers=HEADERS, timeout=10)
         data = res.json().get("data", {})
-        return data.get("images")
+        return {
+            "images": data.get("images"),
+            "title": data.get("title") or "TikTok"
+        }
     except:
         return None
 
-
 # -------------------------------
-# 4. Download images
+# 6. Download images
 # -------------------------------
-def download_images(images):
+def download_images(images, title):
+    title = clean_title(title)
     total = len(images)
     success = 0
 
     for i, img in enumerate(images, 1):
-        filename = DOWNLOAD_DIR / f"image_{i}.jpg"
+        base_filename = DOWNLOAD_DIR / f"{title} ({i}).jpg"
+        filename = get_unique_filename(base_filename)
 
-        for _ in range(3):  # retry
+        for _ in range(3):
             try:
                 r = requests.get(img, headers=HEADERS, timeout=10)
                 if r.status_code == 200:
@@ -69,9 +107,8 @@ def download_images(images):
 
     print(f"\n📸 Done: {success}/{total} images")
 
-
 # -------------------------------
-# 5. yt-dlp progress
+# 7. yt-dlp progress
 # -------------------------------
 def video_progress(d):
     if d["status"] == "downloading":
@@ -82,9 +119,8 @@ def video_progress(d):
     elif d["status"] == "finished":
         print("\n✔ Video download complete")
 
-
 # -------------------------------
-# 6. Download video
+# 8. Download video
 # -------------------------------
 def download_video(urls):
     ydl_opts = {
@@ -103,23 +139,21 @@ def download_video(urls):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download(urls)
 
-
 # -------------------------------
-# 7. Main logic (auto detect)
+# 9. Main logic
 # -------------------------------
 def process_url(url):
     print(f"\n🔗 Processing: {url}")
 
-    images = get_tiktok_images(url)
+    data = get_tiktok_data(url)
 
-    if images:
-        download_images(images)
+    if data and data["images"]:
+        download_images(data["images"], data["title"])
     else:
         download_video([url])
 
-
 # -------------------------------
-# 8. Entry
+# 10. Entry
 # -------------------------------
 urls = input("Enter TikTok URL(s), separated by space: ").split()
 
