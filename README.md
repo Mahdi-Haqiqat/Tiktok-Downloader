@@ -1,29 +1,29 @@
-# TikTok Downloader (CLI)
+# 🎬 TikTok Downloader (CLI)
 
 A simple command-line tool to download videos and photo slideshows from TikTok for personal and educational use.
 
 ---
 
-## Features
+## ✨ Features
 
-* Download TikTok videos
-* Supports `vm.tiktok.com` short links
-* Saves media to a `downloads/` folder
-* Simple CLI interface
-* Lightweight and fast
+* 📥 Download TikTok videos and gallery photos
+* 🔗 Supports `vm.tiktok.com` short links
+* 📁 Saves media to a `Downloads / Tiktok` folder
+* 💻 Simple CLI interface
+* ⚡ Lightweight and fast
 
 ---
 
-## Installation
+## 🚀 Installation
 
-### 1. Clone the repository
+### 1. 📂 Clone the repository
 
 ```bash
 git clone https://github.com/Mahdi-Haqiqat/Tiktok-Downloader.git
 cd Tiktok-Downloader
 ```
 
-### 2. Install dependencies
+### 2. 📦 Install dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 ---
 
-## Usage
+## ▶️ Usage
 
 Run the program:
 
@@ -41,55 +41,57 @@ python main.py
 
 Then paste a TikTok URL when prompted.
 
-Example:
+### 🔍 Example:
 
 ```
 TikTok URL: https://www.tiktok.com/@username/video/123456789
 ```
 
-Downloaded media will be saved in the `downloads` folder.
+📁 Downloaded media will be saved in the \`Downloads / Tiktok\` folder.
 
 ---
 
-## Requirements
+## ⚙️ Requirements
 
-* Python 3.8+
-* Internet connection
+* 🐍 Python 3.8+
+* 🌐 Internet connection
 
-Python dependencies:
+### 📚 Python dependencies:
 
 ```
 yt-dlp
+pathlib
+requests
 ```
 
 ---
 
-## Project Structure
+## 🗂️ Project Structure
 
 ```
-tiktok-downloader
+tiktok-downloader/
 │
 ├── main.py
 ├── requirements.txt
 ├── README.md
-├── LICENSE
-└── downloads/
+└── LICENSE
 ```
 
 ---
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 This project is intended for **educational and personal use only**.
 
 Users are responsible for complying with the Terms of Service of TikTok and any applicable laws in their country.
 
-This project does **not encourage or support copyright infringement, illegal downloading, or misuse of content**.
+❌ This project does **not encourage or support copyright infringement, illegal downloading, or misuse of content**.
 
-The author of this repository is **not responsible for how this software is used**.
+⚖️ The author of this repository is **not responsible for how this software is used**.
 
 ---
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License.
+EOF
