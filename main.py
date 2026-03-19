@@ -116,7 +116,6 @@ def process_url(url):
         print(f"📸 {len(images)} images found\n")
         download_images(images)
     else:
-        print("🎥 Switching to video mode...\n")
         download_video([url])
 
 
